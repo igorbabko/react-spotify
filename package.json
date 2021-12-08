@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.4.2",
+    "@heroicons/react": "^1.0.5",
     "@tailwindcss/line-clamp": "^0.2.2",
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^11.2.7",
