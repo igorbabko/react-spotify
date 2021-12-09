@@ -42,7 +42,7 @@ const navItems = [
 function TheNav() {
   return (
     <nav>
-      {navItems.map(({ classes, icon, label }) => (
+      {navItems.map(({ label, classes, icon }) => (
         <a href="/" className={classes} key={label}>
           {icon}
           <span className="ml-4 text-sm font-semibold">{label}</span>
