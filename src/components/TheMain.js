@@ -1,4 +1,5 @@
 import Playlist from './Playlist';
+import PlaylistContextMenu from './PlaylistContextMenu';
 
 function TheMain() {
   return (
