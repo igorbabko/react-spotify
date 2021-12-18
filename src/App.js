@@ -1,8 +1,8 @@
-import TheSidebar from './TheSidebar';
-import TheSidebarOverlay from './TheSidebarOverlay';
-import TheHeader from './TheHeader';
-import TheMain from './TheMain';
-import TheRegistration from './TheRegistration';
+import TheSidebar from './components/TheSidebar';
+import TheSidebarOverlay from './components/TheSidebarOverlay';
+import TheHeader from './components/TheHeader';
+import TheMain from './components/TheMain';
+import TheRegistration from './components/TheRegistration';
 
 function App() {
   return (
