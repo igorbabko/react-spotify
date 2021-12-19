@@ -1,5 +1,12 @@
 import Playlist from './Playlist';
 
+const playlist = {
+  title: 'Playlist title',
+  description:
+    'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vitae, odit.',
+  coverUrl: 'https://fakeimg.pl/600/7f1d1d/fff?text=Cover&font=lobster',
+};
+
 function TheMain() {
   return (
     <main className="text-white relative">
@@ -20,7 +27,10 @@ function TheMain() {
             </a>
           </div>
           <div className="grid sm:grid-cols-playlists-mobile md:grid-cols-playlists-tablet lg:grid-cols-playlists-desktop gap-5">
-            <Playlist />
+            <Playlist
+              {...playlist}
+              classes="relative p-4 rounded-md bg-[#181818] hover:bg-[#272727] duration-200 group"
+            />
             <a
               href="/"
               className="p-4 rounded-md bg-[#181818] hover:bg-[#272727] duration-200 group hidden sm:block"
