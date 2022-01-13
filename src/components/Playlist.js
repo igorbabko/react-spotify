@@ -45,6 +45,7 @@ function Playlist({ classes, coverUrl, title, description }) {
     <a
       href="/"
       className={`relative p-4 rounded-md bg-[#181818] hover:bg-[#272727] duration-200 group ${classes}`}
+      onClick={(event) => event.preventDefault()}
       onContextMenu={openContextMenu}
     >
       <div className="relative">
