@@ -38,9 +38,27 @@ function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {
     ? 'bg-[#272727]'
     : 'bg-[#181818] hover:bg-[#272727]';
 
+  function updateContextMenuVerticalPosition() {
+    const menuHeight = contextMenuRef.current.offsetHeight;
+    const shouldMoveUp = menuHeight > window.innerHeight - clickPosition.y;
+
+    contextMenuRef.current.style.top = shouldMoveUp
+      ? `${clickPosition.y - menuHeight}px`
+      : `${clickPosition.y}px`;
+  }
+
+  function updateContextMenuHorizontalPosition() {
+    const menuWidth = contextMenuRef.current.offsetWidth;
+    const shouldMoveLeft = menuWidth > window.innerWidth - clickPosition.x;
+
+    contextMenuRef.current.style.left = shouldMoveLeft
+      ? `${clickPosition.x - menuWidth}px`
+      : `${clickPosition.x}px`;
+  }
+
   function updateContextMenuPosition() {
-    contextMenuRef.current.style.top = `${clickPosition.y}px`;
-    contextMenuRef.current.style.left = `${clickPosition.x}px`;
+    updateContextMenuVerticalPosition();
+    updateContextMenuHorizontalPosition();
   }
 
   useLayoutEffect(() => {
