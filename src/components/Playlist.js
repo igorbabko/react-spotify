@@ -30,7 +30,7 @@ const menuItems = [
 
 const clickPosition = { x: null, y: null };
 
-function Playlist({ classes, coverUrl, title, description }) {
+function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {
   const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
   const contextMenuRef = useRef(null);
 
@@ -44,6 +44,8 @@ function Playlist({ classes, coverUrl, title, description }) {
   }
 
   useLayoutEffect(() => {
+    toggleScrolling(!isContextMenuOpen);
+
     if (isContextMenuOpen) {
       updateContextMenuPosition();
     }
