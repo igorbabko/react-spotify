@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useLayoutEffect, useRef } from 'react';
 import PlaylistCover from './PlaylistCover';
 import PlaylistButtonPlay from './PlaylistButtonPlay';
 import PlaylistTitle from './PlaylistTitle';
@@ -43,7 +43,7 @@ function Playlist({ classes, coverUrl, title, description }) {
     contextMenuRef.current.style.left = `${clickPosition.x}px`;
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isContextMenuOpen) {
       updateContextMenuPosition();
     }
