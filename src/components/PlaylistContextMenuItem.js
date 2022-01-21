@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ChevronRightIcon } from '@heroicons/react/outline';
 import PlaylistContextMenu from './PlaylistContextMenu';
 
@@ -8,6 +8,7 @@ function PlaylistContextMenuItem({ children: label, subMenuItems }) {
     positionClasses: '',
   });
   const menuItemRef = useRef(null);
+  let closeMenuTimer = null;
 
   function getMenuPositionXClass() {
     const menuItem = menuItemRef.current;
@@ -35,6 +36,12 @@ function PlaylistContextMenuItem({ children: label, subMenuItems }) {
   }
 
   function openMenu() {
+    if (closeMenuTimer) {
+      stopCloseMenuTimer();
+
+      return;
+    }
+
     setMenuState({
       isOpen: true,
       positionClasses: getMenuPositionClasses(),
@@ -48,12 +55,22 @@ function PlaylistContextMenuItem({ children: label, subMenuItems }) {
     });
   }
 
+  function startCloseMenuTimer() {
+    closeMenuTimer = setTimeout(closeMenu, 100);
+  }
+
+  function stopCloseMenuTimer() {
+    clearTimeout(closeMenuTimer);
+  }
+
+  useEffect(() => stopCloseMenuTimer);
+
   if (subMenuItems) {
     return (
       <li
         className="relative"
         onMouseEnter={openMenu}
-        onMouseLeave={closeMenu}
+        onMouseLeave={startCloseMenuTimer}
         ref={menuItemRef}
       >
         <button className="w-full p-3 text-left hover:text-white hover:bg-[#3e3e3e] cursor-default flex justify-between items-center">
