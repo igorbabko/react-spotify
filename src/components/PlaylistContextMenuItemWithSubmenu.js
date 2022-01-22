@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { ChevronRightIcon } from '@heroicons/react/outline';
 import PlaylistContextMenu from './PlaylistContextMenu';
 
-function PlaylistContextMenuItem({ children: label, subMenuItems }) {
+function PlaylistContextMenuItemWithSubmenu({ children: label, subMenuItems }) {
   const [menuState, setMenuState] = useState({
     isOpen: false,
     positionClasses: '',
@@ -65,26 +65,24 @@ function PlaylistContextMenuItem({ children: label, subMenuItems }) {
 
   useEffect(() => stopCloseMenuTimer);
 
-  if (subMenuItems) {
-    return (
-      <li
-        ref={menuItemRef}
-        className="relative"
-        onMouseEnter={openMenu}
-        onMouseLeave={startCloseMenuTimer}
-      >
-        <button className="w-full p-3 text-left hover:text-white hover:bg-[#3e3e3e] cursor-default flex justify-between items-center">
-          {label} <ChevronRightIcon className="h-4 w-4" />
-        </button>
-        {menuState.isOpen && (
-          <PlaylistContextMenu
-            menuItems={subMenuItems}
-            classes={`bg-[#282828] text-[#eaeaea] text-sm p-1 rounded shadow-xl cursor-default absolute ${menuState.positionClasses}`}
-          />
-        )}
-      </li>
-    );
-  }
+  return (
+    <li
+      ref={menuItemRef}
+      className="relative"
+      onMouseEnter={openMenu}
+      onMouseLeave={startCloseMenuTimer}
+    >
+      <button className="w-full p-3 text-left hover:text-white hover:bg-[#3e3e3e] cursor-default flex justify-between items-center">
+        {label} <ChevronRightIcon className="h-4 w-4" />
+      </button>
+      {menuState.isOpen && (
+        <PlaylistContextMenu
+          menuItems={subMenuItems}
+          classes={`bg-[#282828] text-[#eaeaea] text-sm p-1 rounded shadow-xl cursor-default absolute ${menuState.positionClasses}`}
+        />
+      )}
+    </li>
+  );
 }
 
-export default PlaylistContextMenuItem;
+export default PlaylistContextMenuItemWithSubmenu;
