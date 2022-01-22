@@ -2,13 +2,18 @@ import { useState, useEffect, useRef } from 'react';
 import { ChevronRightIcon } from '@heroicons/react/outline';
 import PlaylistContextMenu from './PlaylistContextMenu';
 
-function PlaylistContextMenuItemWithSubmenu({ children: label, subMenuItems }) {
+let closeMenuTimer = null;
+
+function PlaylistContextMenuItemWithSubmenu({
+  children: label,
+  subMenuItems,
+  onMouseEnter: closeSubmenuIfOpen,
+}) {
   const [menuState, setMenuState] = useState({
     isOpen: false,
     positionClasses: '',
   });
   const menuItemRef = useRef(null);
-  let closeMenuTimer = null;
 
   function getMenuPositionXClass() {
     const menuItem = menuItemRef.current;
@@ -36,6 +41,8 @@ function PlaylistContextMenuItemWithSubmenu({ children: label, subMenuItems }) {
   }
 
   function openMenu() {
+    closeSubmenuIfOpen(startCloseMenuTimer);
+
     if (closeMenuTimer) {
       stopCloseMenuTimer();
 
@@ -56,22 +63,19 @@ function PlaylistContextMenuItemWithSubmenu({ children: label, subMenuItems }) {
   }
 
   function startCloseMenuTimer() {
-    closeMenuTimer = setTimeout(closeMenu, 100);
+    closeMenuTimer = setTimeout(closeMenu, 1000);
   }
 
   function stopCloseMenuTimer() {
     clearTimeout(closeMenuTimer);
+
+    closeMenuTimer = null;
   }
 
   useEffect(() => stopCloseMenuTimer);
 
   return (
-    <li
-      ref={menuItemRef}
-      className="relative"
-      onMouseEnter={openMenu}
-      onMouseLeave={startCloseMenuTimer}
-    >
+    <li className="relative" ref={menuItemRef} onMouseEnter={openMenu}>
       <button className="w-full p-3 text-left hover:text-white hover:bg-[#3e3e3e] cursor-default flex justify-between items-center">
         {label} <ChevronRightIcon className="h-4 w-4" />
       </button>

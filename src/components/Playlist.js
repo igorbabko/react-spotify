@@ -25,26 +25,6 @@ const menuItems = [
   },
   {
     label: 'Open in Desktop app',
-    subMenuItems: [
-      {
-        label: 'Copy link to playlist',
-      },
-      {
-        label: 'Embed playlist',
-      },
-      {
-        label: 'Embed playlist 1',
-      },
-      {
-        label: 'Embed playlist 2',
-      },
-      {
-        label: 'Embed playlist 3',
-      },
-      {
-        label: 'Embed playlist 4',
-      },
-    ],
   },
 ];
 
