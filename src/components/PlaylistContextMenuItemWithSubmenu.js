@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { ChevronRightIcon } from '@heroicons/react/outline';
 import PlaylistContextMenu from './PlaylistContextMenu';
 
-let closeMenuTimer = null;
-
 function PlaylistContextMenuItemWithSubmenu({
   children: label,
   subMenuItems,
@@ -14,6 +12,7 @@ function PlaylistContextMenuItemWithSubmenu({
     positionClasses: '',
   });
   const menuItemRef = useRef(null);
+  let closeMenuTimer = useRef(null);
 
   function getMenuPositionXClass() {
     const menuItem = menuItemRef.current;
@@ -43,7 +42,7 @@ function PlaylistContextMenuItemWithSubmenu({
   function openMenu() {
     closeSubmenuIfOpen(startCloseMenuTimer);
 
-    if (closeMenuTimer) {
+    if (closeMenuTimer.current) {
       stopCloseMenuTimer();
 
       return;
@@ -63,13 +62,13 @@ function PlaylistContextMenuItemWithSubmenu({
   }
 
   function startCloseMenuTimer() {
-    closeMenuTimer = setTimeout(closeMenu, 1000);
+    closeMenuTimer.current = setTimeout(closeMenu, 1000);
   }
 
   function stopCloseMenuTimer() {
-    clearTimeout(closeMenuTimer);
+    clearTimeout(closeMenuTimer.current);
 
-    closeMenuTimer = null;
+    closeMenuTimer.current = null;
   }
 
   useEffect(() => stopCloseMenuTimer);
