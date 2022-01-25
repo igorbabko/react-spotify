@@ -6,7 +6,7 @@ function PlaylistContextMenu({ classes, menuItems }, ref) {
   let closePreviousSubmenu = null;
 
   function closePreviousSubmenuIfOpen(closeSubmenu = null) {
-    if (closePreviousSubmenu && closePreviousSubmenu !== closeSubmenu) {
+    if (closePreviousSubmenu) {
       closePreviousSubmenu();
     }
 
