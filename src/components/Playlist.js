@@ -22,6 +22,14 @@ const menuItems = [
   },
   {
     label: 'About recommendations',
+    subMenuItems: [
+      {
+        label: 'Copy link to playlist',
+      },
+      {
+        label: 'Embed playlist',
+      },
+    ],
   },
   {
     label: 'Open in Desktop app',
