@@ -101,11 +101,15 @@ function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {
 
   useEffect(() => {
     function handleAltKeydown({ key }) {
-      if (key === 'Alt') setContextMenuItems(generateContextMenuItems(true));
+      if (key === 'Alt' && isContextMenuOpen) {
+        setContextMenuItems(generateContextMenuItems(true));
+      }
     }
 
     function handleAltKeyup({ key }) {
-      if (key === 'Alt') setContextMenuItems(generateContextMenuItems());
+      if (key === 'Alt' && isContextMenuOpen) {
+        setContextMenuItems(generateContextMenuItems());
+      }
     }
 
     document.addEventListener('keydown', handleAltKeydown);
