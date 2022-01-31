@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PlaylistContextMenuItem from './PlaylistContextMenuItem';
 import PlaylistContextMenuItemWithSubmenu from './PlaylistContextMenuItemWithSubmenu';
 
 function PlaylistContextMenu({ classes, menuItems }, ref) {
-  let closePreviousSubmenu = null;
+  let closePreviousSubmenu = useRef(null);
 
   function closePreviousSubmenuIfOpen(closeSubmenu = null) {
-    if (closePreviousSubmenu) {
-      closePreviousSubmenu();
+    if (closePreviousSubmenu.current) {
+      closePreviousSubmenu.current();
     }
 
-    closePreviousSubmenu = closeSubmenu;
+    closePreviousSubmenu.current = closeSubmenu;
   }
 
   return (
