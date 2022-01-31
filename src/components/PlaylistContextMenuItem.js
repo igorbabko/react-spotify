@@ -1,33 +1,8 @@
-import { useState, useEffect } from 'react';
-
 function PlaylistContextMenuItem({
-  children: originalLabel,
-  alternateLabel,
+  children: label,
   classes,
   onMouseEnter: closePreviousSubmenuIfOpen,
 }) {
-  const [label, setLabel] = useState(originalLabel);
-
-  useEffect(() => {
-    if (!alternateLabel) return;
-
-    function handleAltKeydown({ key }) {
-      if (key === 'Alt') setLabel(alternateLabel);
-    }
-
-    function handleAltKeyup({ key }) {
-      if (key === 'Alt') setLabel(originalLabel);
-    }
-
-    document.addEventListener('keydown', handleAltKeydown);
-    document.addEventListener('keyup', handleAltKeyup);
-
-    return () => {
-      document.removeEventListener('keydown', handleAltKeydown);
-      document.removeEventListener('keyup', handleAltKeyup);
-    };
-  });
-
   return (
     <li onMouseEnter={() => closePreviousSubmenuIfOpen()}>
       <button
