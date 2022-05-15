@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import PlaylistCover from './PlaylistCover';
 import PlaylistButtonPlay from './PlaylistButtonPlay';
 import PlaylistTitle from './PlaylistTitle';
@@ -6,21 +6,72 @@ import PlaylistDescription from './PlaylistDescription';
 import PlaylistContextMenu from './PlaylistContextMenu';
 import useContextMenu from '../hooks/useContextMenu';
 
+function generateContextMenuItems(isAlternate = false) {
+  return [
+    {
+      label: 'Add to Your Library',
+    },
+    {
+      label: 'Share',
+      subMenuItems: [
+        {
+          label: isAlternate ? 'Copy Spotify URI' : 'Copy link to playlist',
+          classes: 'min-w-[150px]',
+        },
+        {
+          label: 'Embed playlist',
+        },
+      ],
+    },
+    {
+      label: 'About recommendations',
+    },
+    {
+      label: 'Open in Desktop app',
+    },
+  ];
+}
+
 function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {
+  const [contextMenuItems, setContextMenuItems] = useState(
+    generateContextMenuItems()
+  );
+
   const {
     open: openContextMenu,
     ref: contextMenuRef,
     isOpen: isContextMenuOpen,
-    menuItems: contextMenuItems,
-  } = useContextMenu(toggleScrolling);
+  } = useContextMenu();
 
   const bgClasses = isContextMenuOpen
     ? 'bg-[#272727]'
     : 'bg-[#181818] hover:bg-[#272727]';
 
-  useLayoutEffect(() => {
-    toggleScrolling(!isContextMenuOpen);
+  useEffect(() => {
+    if (!isContextMenuOpen) return;
+
+    function handleAltKeydown({ key }) {
+      if (key === 'Alt' && isContextMenuOpen) {
+        setContextMenuItems(generateContextMenuItems(true));
+      }
+    }
+
+    function handleAltKeyup({ key }) {
+      if (key === 'Alt' && isContextMenuOpen) {
+        setContextMenuItems(generateContextMenuItems());
+      }
+    }
+
+    document.addEventListener('keydown', handleAltKeydown);
+    document.addEventListener('keyup', handleAltKeyup);
+
+    return () => {
+      document.removeEventListener('keydown', handleAltKeydown);
+      document.removeEventListener('keyup', handleAltKeyup);
+    };
   });
+
+  useLayoutEffect(() => toggleScrolling(!isContextMenuOpen));
 
   return (
     <a
