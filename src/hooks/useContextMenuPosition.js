@@ -1,17 +1,14 @@
 import { useLayoutEffect, useRef } from 'react';
 
-function useContextMenuPositon(ref, isOpen) {
-  const clickPositionRef = useRef({ x: null, y: null });
+function useContextMenuPositon(menuRef, isOpen) {
+  const clickCoordsRef = useRef({ x: null, y: null });
 
   useLayoutEffect(() => {
-    if (isOpen) {
-      updatePosition();
-    }
+    if (isOpen) updatePosition();
   });
 
-  function setClickPosition(event) {
-    clickPositionRef.current.x = event.clientX;
-    clickPositionRef.current.y = event.clientY;
+  function updateClickCoords(x, y) {
+    clickCoordsRef.current = { x, y };
   }
 
   function updatePosition() {
@@ -20,26 +17,24 @@ function useContextMenuPositon(ref, isOpen) {
   }
 
   function updateVerticalPosition() {
-    const menuHeight = ref.current.offsetHeight;
-    const shouldMoveUp = menuHeight > window.innerHeight - clickPositionRef.current.y;
+    const menu = menuRef.current;
+    const menuHeight = menu.offsetHeight;
+    const y = clickCoordsRef.current.y;
+    const shouldMoveUp = menuHeight > window.innerHeight - y;
 
-    ref.current.style.top = shouldMoveUp
-      ? `${clickPositionRef.current.y - menuHeight}px`
-      : `${clickPositionRef.current.y}px`;
+    menu.style.top = shouldMoveUp ? `${y - menuHeight}px` : `${y}px`;
   }
 
   function updateHorizontalPosition() {
-    const menuWidth = ref.current.offsetWidth;
-    const shouldMoveLeft = menuWidth > window.innerWidth - clickPositionRef.current.x;
+    const menu = menuRef.current;
+    const menuWidth = menu.offsetWidth;
+    const x = clickCoordsRef.current.x;
+    const shouldMoveLeft = menuWidth > window.innerWidth - x;
 
-    ref.current.style.left = shouldMoveLeft
-      ? `${clickPositionRef.current.x - menuWidth}px`
-      : `${clickPositionRef.current.x}px`;
+    menu.style.left = shouldMoveLeft ? `${x - menuWidth}px` : `${x}px`;
   }
 
-  return {
-    setClickPosition
-  }
+  return updateClickCoords;
 }
 
 export default useContextMenuPositon;

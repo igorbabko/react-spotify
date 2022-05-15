@@ -1,26 +1,21 @@
 import { useState, useEffect, useRef } from 'react';
 import usePosition from './useContextMenuPosition';
 
-function useContextMenu(generateMenuItems = () => {}) {
-  // const [menuItems, setMenuItems] = useState(generateMenuItems());
+function useContextMenu(items) {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef(null);
 
-  const { setClickPosition } = usePosition(ref, isOpen);
+  const move = usePosition(ref, isOpen);
 
   useEffect(() => {
     if (!isOpen) return;
 
-    function handleClickAway(event) {
-      if (!ref.current.contains(event.target)) {
-        close();
-      }
+    function handleClickAway({ target }) {
+      if (!ref.current.contains(target)) close();
     }
 
     function handleEsc({ key }) {
-      if (key === 'Escape') {
-        close();
-      }
+      if (key === 'Escape') close();
     }
 
     document.addEventListener('mousedown', handleClickAway);
@@ -35,7 +30,7 @@ function useContextMenu(generateMenuItems = () => {}) {
   function open(event) {
     event.preventDefault();
 
-    setClickPosition(event);
+    move(event.clientX, event.clientY);
 
     setIsOpen(true);
   }
@@ -48,7 +43,7 @@ function useContextMenu(generateMenuItems = () => {}) {
     ref,
     open,
     isOpen,
-    // menuItems,
+    items,
   };
 }
 

@@ -6,7 +6,7 @@ import PlaylistDescription from './PlaylistDescription';
 import PlaylistContextMenu from './PlaylistContextMenu';
 import useContextMenu from '../hooks/useContextMenu';
 
-function generateContextMenuItems(isAlternate = false) {
+function generateMenuItems(isAlternate = false) {
   return [
     {
       label: 'Add to Your Library',
@@ -33,32 +33,25 @@ function generateContextMenuItems(isAlternate = false) {
 }
 
 function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {
-  const [contextMenuItems, setContextMenuItems] = useState(
-    generateContextMenuItems()
-  );
+  const [menuItems, setMenuItems] = useState(generateMenuItems());
+  const menu = useContextMenu(menuItems);
 
-  const {
-    open: openContextMenu,
-    ref: contextMenuRef,
-    isOpen: isContextMenuOpen,
-  } = useContextMenu();
-
-  const bgClasses = isContextMenuOpen
+  const bgClasses = menu.isOpen
     ? 'bg-[#272727]'
     : 'bg-[#181818] hover:bg-[#272727]';
 
   useEffect(() => {
-    if (!isContextMenuOpen) return;
+    if (!menu.isOpen) return;
 
     function handleAltKeydown({ key }) {
-      if (key === 'Alt' && isContextMenuOpen) {
-        setContextMenuItems(generateContextMenuItems(true));
+      if (key === 'Alt' && menu.isOpen) {
+        setMenuItems(generateMenuItems(true));
       }
     }
 
     function handleAltKeyup({ key }) {
-      if (key === 'Alt' && isContextMenuOpen) {
-        setContextMenuItems(generateContextMenuItems());
+      if (key === 'Alt' && menu.isOpen) {
+        setMenuItems(generateMenuItems());
       }
     }
 
@@ -71,14 +64,14 @@ function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {
     };
   });
 
-  useLayoutEffect(() => toggleScrolling(!isContextMenuOpen));
+  useLayoutEffect(() => toggleScrolling(!menu.isOpen));
 
   return (
     <a
       href="/"
       className={`relative p-4 rounded-md duration-200 group ${classes} ${bgClasses}`}
       onClick={(event) => event.preventDefault()}
-      onContextMenu={openContextMenu}
+      onContextMenu={menu.open}
     >
       <div className="relative">
         <PlaylistCover url={coverUrl} />
@@ -86,10 +79,10 @@ function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {
       </div>
       <PlaylistTitle title={title} />
       <PlaylistDescription description={description} />
-      {isContextMenuOpen && (
+      {menu.isOpen && (
         <PlaylistContextMenu
-          ref={contextMenuRef}
-          menuItems={contextMenuItems}
+          ref={menu.ref}
+          menuItems={menu.items}
           classes="fixed bg-[#282828] text-[#eaeaea] text-sm divide-y divide-[#3e3e3e] p-1 rounded shadow-xl cursor-default whitespace-nowrap z-10"
         />
       )}
