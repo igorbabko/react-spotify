@@ -35,7 +35,7 @@ const clickPosition = { x: null, y: null };
 
 function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {
   const [contextMenuItems, setContextMenuItems] = useState(
-    generateContextMenuItems()
+    generateContextMenuItems
   );
   const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
   const contextMenuRef = useRef(null);
@@ -70,24 +70,18 @@ function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {
   useLayoutEffect(() => {
     toggleScrolling(!isContextMenuOpen);
 
-    if (isContextMenuOpen) {
-      updateContextMenuPosition();
-    }
+    if (isContextMenuOpen) updateContextMenuPosition();
   });
 
   useEffect(() => {
     if (!isContextMenuOpen) return;
 
-    function handleClickAway(event) {
-      if (!contextMenuRef.current.contains(event.target)) {
-        closeContextMenu();
-      }
+    function handleClickAway({ target }) {
+      if (!contextMenuRef.current.contains(target)) closeContextMenu();
     }
 
-    function handleEsc(event) {
-      if (event.keyCode === 27) {
-        closeContextMenu();
-      }
+    function handleEsc({ key }) {
+      if (key === 'Escape') closeContextMenu();
     }
 
     document.addEventListener('mousedown', handleClickAway);
@@ -151,7 +145,7 @@ function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {
         <PlaylistContextMenu
           ref={contextMenuRef}
           menuItems={contextMenuItems}
-          classes="fixed bg-[#282828] text-[#eaeaea] text-sm divide-y divide-[#3e3e3e] p-1 rounded shadow-xl cursor-default whitespace-nowrap z-10"
+          classes="fixed divide-y divide-[#3e3e3e]"
         />
       )}
     </a>
