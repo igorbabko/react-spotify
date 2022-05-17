@@ -28,7 +28,7 @@ function generateContextMenuItems(isAlternate = false) {
 
 const clickPosition = { x: null, y: null };
 
-function useContextMenu(toggleScrolling) {
+function useContextMenu(toggleScrolling = () => {}) {
   const [contextMenuItems, setContextMenuItems] = useState(
     generateContextMenuItems
   );
