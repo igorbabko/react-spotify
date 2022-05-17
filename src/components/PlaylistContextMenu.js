@@ -6,16 +6,17 @@ function PlaylistContextMenu({ classes, menuItems }, ref) {
   let closePreviousSubmenu = useRef(null);
 
   function closePreviousSubmenuIfOpen(closeSubmenu = null) {
-    if (closePreviousSubmenu.current) {
-      closePreviousSubmenu.current();
-    }
+    if (closePreviousSubmenu.current) closePreviousSubmenu.current();
 
     closePreviousSubmenu.current = closeSubmenu;
   }
 
   return (
-    <ul className={classes} ref={ref}>
-      {menuItems.map(({ label, subMenuItems, classes }) => {
+    <ul
+      className={`bg-[#282828] text-[#eaeaea] text-sm p-1 rounded shadow-3xl cursor-default whitespace-nowrap z-10 ${classes}`}
+      ref={ref}
+    >
+      {menuItems.map(({ label, subMenuItems, classes: menuItemClasses }) => {
         if (subMenuItems) {
           return (
             <PlaylistContextMenuItemWithSubmenu
@@ -31,7 +32,7 @@ function PlaylistContextMenu({ classes, menuItems }, ref) {
         return (
           <PlaylistContextMenuItem
             key={label}
-            classes={classes}
+            classes={menuItemClasses}
             onMouseEnter={closePreviousSubmenuIfOpen}
           >
             {label}
