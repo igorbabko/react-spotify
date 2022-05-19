@@ -1,43 +1,10 @@
 import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 
-function generateContextMenuItems(isAlternate = false) {
-  return [
-    {
-      label: 'Add to Your Library',
-    },
-    {
-      label: 'Share',
-      subMenuItems: [
-        {
-          label: isAlternate ? 'Copy Spotify URI' : 'Copy link to playlist',
-          classes: 'min-w-[150px]',
-        },
-        {
-          label: 'Embed playlist',
-        },
-      ],
-    },
-    {
-      label: 'About recommendations',
-    },
-    {
-      label: 'Open in Desktop app',
-    },
-  ];
-}
-
 const clickPosition = { x: null, y: null };
 
-function useContextMenu(toggleScrolling = () => {}) {
-  const [contextMenuItems, setContextMenuItems] = useState(
-    generateContextMenuItems()
-  );
+function useContextMenu() {
   const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
   const contextMenuRef = useRef(null);
-
-  const bgClasses = isContextMenuOpen
-    ? 'bg-[#272727]'
-    : 'bg-[#181818] hover:bg-[#272727]';
 
   function updateContextMenuVerticalPosition() {
     const menuHeight = contextMenuRef.current.offsetHeight;
@@ -63,16 +30,14 @@ function useContextMenu(toggleScrolling = () => {}) {
   }
 
   useLayoutEffect(() => {
-    toggleScrolling(!isContextMenuOpen);
-
     if (isContextMenuOpen) updateContextMenuPosition();
   });
 
   useEffect(() => {
     if (!isContextMenuOpen) return;
 
-    function handleClickAway(event) {
-      if (!contextMenuRef.current.contains(event.target)) closeContextMenu();
+    function handleClickAway({ target }) {
+      if (!contextMenuRef.current.contains(target)) closeContextMenu();
     }
 
     function handleEsc({ key }) {
@@ -85,28 +50,6 @@ function useContextMenu(toggleScrolling = () => {}) {
     return () => {
       document.removeEventListener('mousedown', handleClickAway);
       document.removeEventListener('keydown', handleEsc);
-    };
-  });
-
-  useEffect(() => {
-    function handleAltKeydown({ key }) {
-      if (key === 'Alt' && isContextMenuOpen) {
-        setContextMenuItems(generateContextMenuItems(true));
-      }
-    }
-
-    function handleAltKeyup({ key }) {
-      if (key === 'Alt' && isContextMenuOpen) {
-        setContextMenuItems(generateContextMenuItems());
-      }
-    }
-
-    document.addEventListener('keydown', handleAltKeydown);
-    document.addEventListener('keyup', handleAltKeyup);
-
-    return () => {
-      document.removeEventListener('keydown', handleAltKeydown);
-      document.removeEventListener('keyup', handleAltKeyup);
     };
   });
 
@@ -124,11 +67,9 @@ function useContextMenu(toggleScrolling = () => {}) {
   }
 
   return {
-    bgClasses,
     openContextMenu,
     isContextMenuOpen,
     contextMenuRef,
-    contextMenuItems,
   };
 }
 
