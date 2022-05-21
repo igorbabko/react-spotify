@@ -2,19 +2,19 @@ import { useState, useEffect, useRef } from 'react';
 import usePosition from './useContextMenuPosition';
 
 function useContextMenu() {
-  const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
-  const contextMenuRef = useRef(null);
-  const updateClickCoordinates = usePosition(contextMenuRef, isContextMenuOpen);
+  const [isOpen, setIsOpen] = useState(false);
+  const ref = useRef(null);
+  const move = usePosition(ref, isOpen);
 
   useEffect(() => {
-    if (!isContextMenuOpen) return;
+    if (!isOpen) return;
 
     function handleClickAway({ target }) {
-      if (!contextMenuRef.current.contains(target)) closeContextMenu();
+      if (!ref.current.contains(target)) close();
     }
 
     function handleEsc({ key }) {
-      if (key === 'Escape') closeContextMenu();
+      if (key === 'Escape') close();
     }
 
     document.addEventListener('mousedown', handleClickAway);
@@ -26,22 +26,22 @@ function useContextMenu() {
     };
   });
 
-  function openContextMenu(event) {
+  function open(event) {
     event.preventDefault();
 
-    updateClickCoordinates(event.clientX, event.clientY);
+    move(event.clientX, event.clientY);
 
-    setIsContextMenuOpen(true);
+    setIsOpen(true);
   }
 
-  function closeContextMenu() {
-    setIsContextMenuOpen(false);
+  function close() {
+    setIsOpen(false);
   }
 
   return {
-    openContextMenu,
-    isContextMenuOpen,
-    contextMenuRef,
+    ref,
+    open,
+    isOpen,
   };
 }
 
