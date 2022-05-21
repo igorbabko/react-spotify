@@ -4,7 +4,7 @@ import PlaylistButtonPlay from './PlaylistButtonPlay';
 import PlaylistTitle from './PlaylistTitle';
 import PlaylistDescription from './PlaylistDescription';
 import PlaylistContextMenu from './PlaylistContextMenu';
-import useContextMenu from '../hooks/useContextMenu';
+import useMenu from '../hooks/useContextMenu';
 
 function generateMenuItems(isAlternate = false) {
   return [
@@ -35,11 +35,7 @@ function generateMenuItems(isAlternate = false) {
 function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {
   const [menuItems, setMenuItems] = useState(generateMenuItems);
 
-  const {
-    openContextMenu: openMenu,
-    isContextMenuOpen: isMenuOpen,
-    contextMenuRef: menuRef,
-  } = useContextMenu();
+  const { open: openMenu, isOpen: isMenuOpen, ref: menuRef } = useMenu();
 
   useLayoutEffect(() => toggleScrolling(!isMenuOpen));
 
