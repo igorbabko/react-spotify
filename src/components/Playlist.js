@@ -34,7 +34,7 @@ function generateMenuItems(isAlternate = false) {
 
 function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {
   const [menuItems, setMenuItems] = useState(generateMenuItems);
-  const menu = useMenu();
+  const menu = useMenu(menuItems);
 
   useLayoutEffect(() => toggleScrolling(!menu.isOpen));
 
@@ -78,7 +78,7 @@ function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {
       {menu.isOpen && (
         <PlaylistContextMenu
           ref={menu.ref}
-          menuItems={menuItems}
+          menuItems={menu.items}
           classes="fixed divide-y divide-[#3e3e3e]"
         />
       )}

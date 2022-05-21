@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import usePosition from './useContextMenuPosition';
 
-function useContextMenu() {
+function useContextMenu(items) {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef(null);
   const move = usePosition(ref, isOpen);
@@ -42,6 +42,7 @@ function useContextMenu() {
     ref,
     open,
     isOpen,
+    items,
   };
 }
 
