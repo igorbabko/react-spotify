@@ -34,13 +34,12 @@ function generateMenuItems(isAlternate = false) {
 
 function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {
   const [menuItems, setMenuItems] = useState(generateMenuItems);
+  const menu = useMenu();
 
-  const { open: openMenu, isOpen: isMenuOpen, ref: menuRef } = useMenu();
-
-  useLayoutEffect(() => toggleScrolling(!isMenuOpen));
+  useLayoutEffect(() => toggleScrolling(!menu.isOpen));
 
   useEffect(() => {
-    if (!isMenuOpen) return;
+    if (!menu.isOpen) return;
 
     function handleAltKeydown({ key }) {
       if (key === 'Alt') setMenuItems(generateMenuItems(true));
@@ -59,7 +58,7 @@ function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {
     };
   });
 
-  const bgClasses = isMenuOpen
+  const bgClasses = menu.isOpen
     ? 'bg-[#272727]'
     : 'bg-[#181818] hover:bg-[#272727]';
 
@@ -68,7 +67,7 @@ function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {
       href="/"
       className={`relative p-4 rounded-md duration-200 group ${classes} ${bgClasses}`}
       onClick={(event) => event.preventDefault()}
-      onContextMenu={openMenu}
+      onContextMenu={menu.open}
     >
       <div className="relative">
         <PlaylistCover url={coverUrl} />
@@ -76,9 +75,9 @@ function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {
       </div>
       <PlaylistTitle title={title} />
       <PlaylistDescription description={description} />
-      {isMenuOpen && (
+      {menu.isOpen && (
         <PlaylistContextMenu
-          ref={menuRef}
+          ref={menu.ref}
           menuItems={menuItems}
           classes="fixed divide-y divide-[#3e3e3e]"
         />
