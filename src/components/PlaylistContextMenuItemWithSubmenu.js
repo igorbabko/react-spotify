@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { ChevronRightIcon } from '@heroicons/react/outline';
 import PlaylistContextMenu from './PlaylistContextMenu';
 import useSubmenu from '../hooks/useContextSubmenu';
@@ -7,16 +8,13 @@ function PlaylistContextMenuItemWithSubmenu({
   submenuItems,
   onMouseEnter: closePreviousSubmenuIfOpen,
 }) {
-  const submenu = useSubmenu(submenuItems, closePreviousSubmenuIfOpen);
+  const ref = useRef(null);
+  const submenu = useSubmenu(submenuItems, closePreviousSubmenuIfOpen, ref);
 
   const bgClass = submenu.isOpen ? 'bg-[#3e3e3e]' : 'hover:bg-[#3e3e3e]';
 
   return (
-    <li
-      className="relative"
-      onMouseEnter={submenu.open}
-      ref={submenu.menuItemRef}
-    >
+    <li className="relative" onMouseEnter={submenu.open} ref={ref}>
       <button
         className={`w-full p-3 text-left hover:text-white cursor-default flex justify-between items-center ${bgClass}`}
       >

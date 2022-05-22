@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 
-function useContextSubmenu(items, closePreviousIfOpen) {
+function useContextSubmenu(items, closePreviousIfOpen, menuItemRef) {
   const [state, setState] = useState({
     isOpen: false,
     positionClasses: '',
   });
-  const menuItemRef = useRef(null);
   const closeTimer = useRef(null);
 
   useEffect(() => stopCloseTimer);
@@ -61,7 +60,6 @@ function useContextSubmenu(items, closePreviousIfOpen) {
   return {
     open,
     items,
-    menuItemRef,
     ...state,
   };
 }
