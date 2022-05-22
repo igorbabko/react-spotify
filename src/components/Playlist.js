@@ -13,7 +13,7 @@ function generateMenuItems(isAlternate = false) {
     },
     {
       label: 'Share',
-      subMenuItems: [
+      submenuItems: [
         {
           label: isAlternate ? 'Copy Spotify URI' : 'Copy link to playlist',
           classes: 'min-w-[150px]',

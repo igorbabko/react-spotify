@@ -43,10 +43,9 @@ function useContextSubmenu(items, closePreviousIfOpen) {
     const menuItemWidth = menuItem.offsetWidth;
     const windowWidth = window.innerWidth;
     const menuItemRightCoordX = menuItem.getBoundingClientRect().right;
-    const shouldMoveMenuLeft =
-      menuItemWidth > windowWidth - menuItemRightCoordX;
+    const shouldMoveLeft = menuItemWidth > windowWidth - menuItemRightCoordX;
 
-    return shouldMoveMenuLeft ? 'right-full' : 'left-full';
+    return shouldMoveLeft ? 'right-full' : 'left-full';
   }
 
   function getPositionYClass() {
@@ -54,9 +53,9 @@ function useContextSubmenu(items, closePreviousIfOpen) {
     const menuItem = menuItemRef.current;
     const menuHeight = menuItem.offsetHeight * items.length;
     const menuItemBottomCoordY = menuItem.getBoundingClientRect().bottom;
-    const shouldMoveMenuUp = menuHeight > windowHeight - menuItemBottomCoordY;
+    const shouldMoveUp = menuHeight > windowHeight - menuItemBottomCoordY;
 
-    return shouldMoveMenuUp ? 'bottom-0' : 'top-0';
+    return shouldMoveUp ? 'bottom-0' : 'top-0';
   }
 
   return {
