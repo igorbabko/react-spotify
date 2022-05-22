@@ -4,7 +4,7 @@ import PlaylistContextMenu from './PlaylistContextMenu';
 
 function PlaylistContextMenuItemWithSubmenu({
   children: label,
-  subMenuItems,
+  submenuItems,
   onMouseEnter: closePreviousSubmenuIfOpen,
 }) {
   const [menuState, setMenuState] = useState({
@@ -15,30 +15,7 @@ function PlaylistContextMenuItemWithSubmenu({
   const closeMenuTimer = useRef(null);
   const bgClass = menuState.isOpen ? 'bg-[#3e3e3e]' : 'hover:bg-[#3e3e3e]';
 
-  function getMenuPositionXClass() {
-    const menuItem = menuItemRef.current;
-    const menuItemWidth = menuItem.offsetWidth;
-    const windowWidth = window.innerWidth;
-    const menuItemRightCoordX = menuItem.getBoundingClientRect().right;
-    const shouldMoveMenuLeft =
-      menuItemWidth > windowWidth - menuItemRightCoordX;
-
-    return shouldMoveMenuLeft ? 'right-full' : 'left-full';
-  }
-
-  function getMenuPositionYClass() {
-    const windowHeight = window.innerHeight;
-    const menuItem = menuItemRef.current;
-    const menuHeight = menuItem.offsetHeight * subMenuItems.length;
-    const menuItemBottomCoordY = menuItem.getBoundingClientRect().bottom;
-    const shouldMoveMenuUp = menuHeight > windowHeight - menuItemBottomCoordY;
-
-    return shouldMoveMenuUp ? 'bottom-0' : 'top-0';
-  }
-
-  function getMenuPositionClasses() {
-    return `${getMenuPositionYClass()} ${getMenuPositionXClass()}`;
-  }
+  useContextSubmenu(menuItemRef, submenuItems);
 
   function openMenu() {
     closePreviousSubmenuIfOpen(startCloseMenuTimer);
@@ -75,7 +52,7 @@ function PlaylistContextMenuItemWithSubmenu({
       </button>
       {menuState.isOpen && (
         <PlaylistContextMenu
-          menuItems={subMenuItems}
+          menuItems={submenuItems}
           classes={`absolute ${menuState.positionClasses}`}
         />
       )}
