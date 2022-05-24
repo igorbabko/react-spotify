@@ -16,29 +16,32 @@ function PlaylistContextMenu({ classes, menuItems }, ref) {
       className={`bg-[#282828] text-[#eaeaea] text-sm p-1 rounded shadow-3xl cursor-default whitespace-nowrap z-10 ${classes}`}
       ref={ref}
     >
-      {menuItems.map(({ label, submenuItems, classes: menuItemClasses }) => {
-        if (submenuItems) {
+      {menuItems.map(
+        ({ label, action, submenuItems, classes: menuItemClasses }) => {
+          if (submenuItems) {
+            return (
+              <PlaylistContextMenuItemWithSubmenu
+                key={label}
+                submenuItems={submenuItems}
+                onMouseEnter={closePreviousSubmenuIfOpen}
+              >
+                {label}
+              </PlaylistContextMenuItemWithSubmenu>
+            );
+          }
+
           return (
-            <PlaylistContextMenuItemWithSubmenu
+            <PlaylistContextMenuItem
               key={label}
-              submenuItems={submenuItems}
+              onClick={action}
+              classes={menuItemClasses}
               onMouseEnter={closePreviousSubmenuIfOpen}
             >
               {label}
-            </PlaylistContextMenuItemWithSubmenu>
+            </PlaylistContextMenuItem>
           );
         }
-
-        return (
-          <PlaylistContextMenuItem
-            key={label}
-            classes={menuItemClasses}
-            onMouseEnter={closePreviousSubmenuIfOpen}
-          >
-            {label}
-          </PlaylistContextMenuItem>
-        );
-      })}
+      )}
     </ul>
   );
 }
