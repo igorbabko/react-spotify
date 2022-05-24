@@ -41,6 +41,7 @@ function useContextMenu(items) {
   return {
     ref,
     open,
+    close,
     isOpen,
     items,
   };

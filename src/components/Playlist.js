@@ -22,7 +22,12 @@ function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {
           {
             label: isAlternate ? 'Copy Spotify URI' : 'Copy link to playlist',
             classes: 'min-w-[150px]',
-            action: showToast,
+            action: () => {
+              navigator.clipboard.writeText(title).then(() => {
+                menu.close();
+                showToast();
+              });
+            },
           },
           {
             label: 'Embed playlist',
