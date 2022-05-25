@@ -57,7 +57,7 @@ const playlists = [
   },
 ];
 
-function TheMain({ toggleScrolling }) {
+function TheMain({ showToast, toggleScrolling }) {
   return (
     <main className="text-white relative">
       <div className="h-[275px] bg-gradient-to-b from-[#1f1f1f] to-[#121212] absolute w-full"></div>
@@ -80,8 +80,9 @@ function TheMain({ toggleScrolling }) {
             {playlists.map((playlist) => (
               <Playlist
                 key={playlist.title}
-                {...playlist}
+                showToast={showToast}
                 toggleScrolling={toggleScrolling}
+                {...playlist}
               />
             ))}
           </div>

@@ -1,5 +1,4 @@
-import { useState, useEffect, useLayoutEffect, useRef } from 'react';
-import BaseToast from './BaseToast';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import PlaylistCover from './PlaylistCover';
 import PlaylistButtonPlay from './PlaylistButtonPlay';
 import PlaylistTitle from './PlaylistTitle';
@@ -7,10 +6,14 @@ import PlaylistDescription from './PlaylistDescription';
 import PlaylistContextMenu from './PlaylistContextMenu';
 import useMenu from '../hooks/useContextMenu';
 
-function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {;
-  const [isToastShown, setIsToastShown] = useState();
-  const closeToastTimer = useRef();
-
+function Playlist({
+  classes,
+  coverUrl,
+  title,
+  description,
+  showToast,
+  toggleScrolling,
+}) {
   function generateMenuItems(isAlternate = false) {
     return [
       {
@@ -25,7 +28,7 @@ function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {;
             action: () => {
               navigator.clipboard.writeText(title).then(() => {
                 menu.close();
-                showToast();
+                showToast('Link copied to clipboard');
               });
             },
           },
@@ -68,44 +71,31 @@ function Playlist({ classes, coverUrl, title, description, toggleScrolling }) {;
     };
   });
 
-  function showToast() {
-    setIsToastShown(true);
-
-    closeToastTimer.current = setTimeout(hideToast, 3000);
-  }
-
-  function hideToast() {
-    setIsToastShown(false);
-  }
-
   const bgClasses = menu.isOpen
     ? 'bg-[#272727]'
     : 'bg-[#181818] hover:bg-[#272727]';
 
   return (
-    <>
-      <a
-        href="/"
-        className={`relative p-4 rounded-md duration-200 group ${classes} ${bgClasses}`}
-        onClick={(event) => event.preventDefault()}
-        onContextMenu={menu.open}
-      >
-        <div className="relative">
-          <PlaylistCover url={coverUrl} />
-          <PlaylistButtonPlay />
-        </div>
-        <PlaylistTitle title={title} />
-        <PlaylistDescription description={description} />
-        {menu.isOpen && (
-          <PlaylistContextMenu
-            ref={menu.ref}
-            menuItems={menu.items}
-            classes="fixed divide-y divide-[#3e3e3e]"
-          />
-        )}
-      </a>
-      {isToastShown && <BaseToast>Link copied to clipboard</BaseToast>}
-    </>
+    <a
+      href="/"
+      className={`relative p-4 rounded-md duration-200 group ${classes} ${bgClasses}`}
+      onClick={(event) => event.preventDefault()}
+      onContextMenu={menu.open}
+    >
+      <div className="relative">
+        <PlaylistCover url={coverUrl} />
+        <PlaylistButtonPlay />
+      </div>
+      <PlaylistTitle title={title} />
+      <PlaylistDescription description={description} />
+      {menu.isOpen && (
+        <PlaylistContextMenu
+          ref={menu.ref}
+          menuItems={menu.items}
+          classes="fixed divide-y divide-[#3e3e3e]"
+        />
+      )}
+    </a>
   );
 }
 
