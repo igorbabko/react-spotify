@@ -8,20 +8,19 @@ import TheRegistration from './components/TheRegistration';
 
 function App() {
   const [toastMessage, setToastMessage] = useState();
-  const [isToastShown, setIsToastShown] = useState();
-  const toastTimer = useRef(null);
   const contentWrapperRef = useRef(null);
+  const hideToastTimer = useRef();
+  const toastRef = useRef();
   let isScrollingEnabled = true;
 
   function showToast(message) {
+    clearTimeout(hideToastTimer.current);
+
     setToastMessage(message);
-    setIsToastShown(true);
 
-    // toastTimer.current = setTimeout(hideToast, 3000);
-  }
+    toastRef.current.show();
 
-  function hideToast() {
-    setIsToastShown(false);
+    hideToastTimer.current = setTimeout(toastRef.current.hide, 3000);
   }
 
   function toggleScrolling(isEnabled) {
@@ -54,7 +53,7 @@ function App() {
         </div>
       </div>
       <TheRegistration />
-      {isToastShown && <BaseToast>{toastMessage}</BaseToast>}
+      <BaseToast ref={toastRef}>{toastMessage}</BaseToast>
     </>
   );
 }

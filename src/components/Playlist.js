@@ -28,7 +28,7 @@ function Playlist({
             action: () => {
               navigator.clipboard.writeText(title).then(() => {
                 menu.close();
-                showToast('Link copied to clipboard');
+                showToast(title);
               });
             },
           },
