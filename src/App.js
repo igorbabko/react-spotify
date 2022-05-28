@@ -10,11 +10,16 @@ import TheRegistration from './components/TheRegistration';
 function App() {
   const contentWrapperRef = useRef(null);
   const toastRef = useRef();
+  const popoverRef = useRef();
 
   let isScrollingEnabled = true;
 
   function showToast(message) {
     toastRef.current.show(message);
+  }
+
+  function showPopover() {
+    popoverRef.current.show();
   }
 
   function toggleScrolling(isEnabled) {
@@ -39,7 +44,7 @@ function App() {
   return (
     <>
       <div className="flex grow overflow-auto">
-        <TheSidebar />
+        <TheSidebar showPopover={showPopover} />
         <TheSidebarOverlay />
         <div className="flex-1 overflow-auto" ref={contentWrapperRef}>
           <TheHeader />
@@ -48,7 +53,7 @@ function App() {
       </div>
       <TheRegistration />
       <BaseToast ref={toastRef} />
-      <BasePopover />
+      <BasePopover ref={popoverRef} />
     </>
   );
 }
