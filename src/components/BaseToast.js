@@ -1,4 +1,4 @@
-import React, { useState, useRef, useImperativeHandle } from 'react';
+import { useState, useRef, useImperativeHandle, forwardRef } from 'react';
 
 function BaseToast(_, ref) {
   const [opacityClass, setOpacityClass] = useState('opacity-0');
@@ -25,4 +25,4 @@ function BaseToast(_, ref) {
   );
 }
 
-export default React.forwardRef(BaseToast);
+export default forwardRef(BaseToast);
