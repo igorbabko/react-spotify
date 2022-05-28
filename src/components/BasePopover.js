@@ -24,7 +24,7 @@ function BasePopover(_, ref) {
   useImperativeHandle(ref, () => ({ show }));
 
   function show() {
-    setClasses('opacity-1');
+    setClasses('opacity-1 -translate-x-1');
   }
 
   function hide() {
