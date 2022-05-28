@@ -1,19 +1,31 @@
-import { useState, useEffect, useRef } from 'react';
+import {
+  useState,
+  useEffect,
+  useRef,
+  useImperativeHandle,
+  forwardRef,
+} from 'react';
 import BaseButton from './BaseButton';
 
-function BasePopover() {
-  const [classes, setClasses] = useState();
-  const ref = useRef();
+function BasePopover(_, ref) {
+  const [classes, setClasses] = useState('opacity-0 pointer-events-none');
+  const nodeRef = useRef();
 
   useEffect(() => {
     function handleClickAway({ target }) {
-      if (!ref.current.contains(target)) hide();
+      if (!nodeRef.current.contains(target)) hide();
     }
 
     document.addEventListener('mousedown', handleClickAway);
 
     return () => document.removeEventListener('mousedown', handleClickAway);
   });
+
+  useImperativeHandle(ref, () => ({ show }));
+
+  function show() {
+    setClasses('opacity-1');
+  }
 
   function hide() {
     setClasses('opacity-0 pointer-events-none');
@@ -22,7 +34,7 @@ function BasePopover() {
   return (
     <div
       className={`fixed top-[227px] left-[200px] z-30 bg-[#0e72ea] text-white tracking-wide rounded-lg shadow-3xl p-4 min-w-[330px] select-none transition duration-300 ${classes}`}
-      ref={ref}
+      ref={nodeRef}
     >
       <h3 className="text-lg font-bold mb-2">Create a playlist</h3>
       <p className="text-xs">Log in to create and share playlists.</p>
@@ -37,4 +49,4 @@ function BasePopover() {
   );
 }
 
-export default BasePopover;
+export default forwardRef(BasePopover);
