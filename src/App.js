@@ -26,8 +26,8 @@ function App() {
     toastRef.current.show(message);
   }
 
-  function showPopover(title, description) {
-    popoverRef.current.show(title, description);
+  function showPopover(title, description, target) {
+    popoverRef.current.show(title, description, target);
   }
 
   function toggleScrolling(isEnabled) {
