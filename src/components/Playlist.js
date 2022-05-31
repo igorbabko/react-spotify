@@ -1,10 +1,10 @@
 import { useState, useEffect, useLayoutEffect } from 'react';
+import useMenu from '../hooks/useContextMenu';
 import PlaylistCover from './PlaylistCover';
 import PlaylistButtonPlay from './PlaylistButtonPlay';
 import PlaylistTitle from './PlaylistTitle';
 import PlaylistDescription from './PlaylistDescription';
 import PlaylistContextMenu from './PlaylistContextMenu';
-import useMenu from '../hooks/useContextMenu';
 
 function Playlist({
   classes,

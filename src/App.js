@@ -8,11 +8,19 @@ import TheMain from './components/TheMain';
 import TheRegistration from './components/TheRegistration';
 
 function App() {
-  const contentWrapperRef = useRef(null);
+  const contentWrapperRef = useRef();
   const popoverRef = useRef();
   const toastRef = useRef();
 
   let isScrollingEnabled = true;
+
+  useEffect(() => {
+    const contentWrapper = contentWrapperRef.current;
+
+    contentWrapper.addEventListener('wheel', handleScrolling);
+
+    return () => contentWrapper.removeEventListener('wheel', handleScrolling);
+  });
 
   function showPopover() {
     popoverRef.current.show();
@@ -32,14 +40,6 @@ function App() {
     event.preventDefault();
     event.stopPropagation();
   }
-
-  useEffect(() => {
-    const contentWrapper = contentWrapperRef.current;
-
-    contentWrapper.addEventListener('wheel', handleScrolling);
-
-    return () => contentWrapper.removeEventListener('wheel', handleScrolling);
-  });
 
   return (
     <>

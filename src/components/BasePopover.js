@@ -7,10 +7,10 @@ import {
 } from 'react';
 import BaseButton from './BaseButton';
 
+const HIDDEN_CLASSES = 'opacity-0 translate-x-1 pointer-events-none';
+
 function BasePopover(_, ref) {
-  const [classes, setClasses] = useState(
-    'opacity-0 translate-x-1 pointer-events-none'
-  );
+  const [classes, setClasses] = useState(HIDDEN_CLASSES);
   const nodeRef = useRef();
 
   useEffect(() => {
@@ -26,11 +26,11 @@ function BasePopover(_, ref) {
   useImperativeHandle(ref, () => ({ show }));
 
   function show() {
-    setClasses('opacity-1');
+    setClasses('');
   }
 
   function hide() {
-    setClasses('opacity-0 translate-x-1 pointer-events-none');
+    setClasses(HIDDEN_CLASSES);
   }
 
   return (
