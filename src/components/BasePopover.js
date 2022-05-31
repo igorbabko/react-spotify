@@ -8,7 +8,9 @@ import {
 import BaseButton from './BaseButton';
 
 function BasePopover(_, ref) {
-  const [classes, setClasses] = useState('opacity-0 pointer-events-none');
+  const [classes, setClasses] = useState(
+    'opacity-0 translate-x-1 pointer-events-none'
+  );
   const nodeRef = useRef();
 
   useEffect(() => {
@@ -28,7 +30,7 @@ function BasePopover(_, ref) {
   }
 
   function hide() {
-    setClasses('opacity-0 pointer-events-none');
+    setClasses('opacity-0 translate-x-1 pointer-events-none');
   }
 
   return (

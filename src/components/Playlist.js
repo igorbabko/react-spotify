@@ -12,12 +12,17 @@ function Playlist({
   title,
   description,
   showToast,
+  showPopover,
   toggleScrolling,
 }) {
   function generateMenuItems(isAlternate = false) {
     return [
       {
         label: 'Add to Your Library',
+        action: () => {
+          menu.close();
+          showPopover();
+        }
       },
       {
         label: 'Share',
