@@ -11,6 +11,8 @@ const HIDDEN_CLASSES = 'opacity-0 translate-x-1 pointer-events-none';
 
 function BasePopover(_, ref) {
   const [classes, setClasses] = useState(HIDDEN_CLASSES);
+  const [title, setTitle] = useState();
+  const [description, setDescription] = useState();
   const nodeRef = useRef();
 
   useEffect(() => {
@@ -25,7 +27,9 @@ function BasePopover(_, ref) {
 
   useImperativeHandle(ref, () => ({ show }));
 
-  function show() {
+  function show(title, description) {
+    setTitle(title);
+    setDescription(description);
     setClasses('');
   }
 
@@ -35,11 +39,11 @@ function BasePopover(_, ref) {
 
   return (
     <div
-      className={`fixed top-[227px] left-[200px] z-30 bg-[#0e72ea] text-white tracking-wide rounded-lg shadow-3xl p-4 min-w-[330px] select-none transition duration-300 ${classes}`}
+      className={`fixed top-[227px] left-[200px] z-30 bg-[#0e72ea] text-white tracking-wide rounded-lg shadow-3xl p-4 w-[330px] select-none transition duration-300 ${classes}`}
       ref={nodeRef}
     >
-      <h3 className="text-lg font-bold mb-2">Create a playlist</h3>
-      <p className="text-xs">Log in to create and share playlists.</p>
+      <h3 className="text-lg font-bold mb-2">{title}</h3>
+      <p className="text-xs">{description}</p>
       <div className="mt-6 text-right">
         <BaseButton onClick={hide}>Not now</BaseButton>
         <BaseButton primary>Log in</BaseButton>

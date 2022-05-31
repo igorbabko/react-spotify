@@ -22,8 +22,8 @@ function App() {
     return () => contentWrapper.removeEventListener('wheel', handleScrolling);
   });
 
-  function showPopover() {
-    popoverRef.current.show();
+  function showPopover(title, description) {
+    popoverRef.current.show(title, description);
   }
 
   function showToast(message) {
