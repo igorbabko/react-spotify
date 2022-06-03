@@ -41,8 +41,8 @@ function BasePopover(_, ref) {
   function moveTo(target) {
     const { top, right, height } = target.getBoundingClientRect();
 
-    nodeRef.current.style.top = `${top}px`;
-    nodeRef.current.style.left = `${right}px`;
+    nodeRef.current.style.top = `${top - (height / 3) * 2}px`;
+    nodeRef.current.style.left = `${right + 30}px`;
   }
 
   return (

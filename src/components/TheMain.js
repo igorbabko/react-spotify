@@ -57,7 +57,7 @@ const playlists = [
   },
 ];
 
-function TheMain({ showToast, showPopover, toggleScrolling }) {
+function TheMain({ showToast, toggleScrolling }) {
   return (
     <main className="text-white relative">
       <div className="h-[275px] bg-gradient-to-b from-[#1f1f1f] to-[#121212] absolute w-full"></div>
@@ -81,7 +81,6 @@ function TheMain({ showToast, showPopover, toggleScrolling }) {
               <Playlist
                 key={playlist.title}
                 showToast={showToast}
-                showPopover={showPopover}
                 toggleScrolling={toggleScrolling}
                 {...playlist}
               />
