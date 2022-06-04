@@ -53,12 +53,16 @@ function TheNav({ showPopover }) {
       classes: navItemClasses,
       icon: <HeartIcon className="h-6 w-6" />,
       action(target) {
-        const { top, right, height } = target.getBoundingClientRect();
+        let offset = null;
 
-        const offset = {
-          top: top - (height / 3) * 2,
-          left: right + 130,
-        };
+        if (window.innerWidth >= 700) {
+          const { top, right, height } = target.getBoundingClientRect();
+
+          offset = {
+            top: top - (height / 3) * 2,
+            left: right + 130,
+          };
+        }
 
         showPopover(
           'Enjoy your Liked Songs',
