@@ -53,10 +53,13 @@ function TheNav({ showPopover }) {
       classes: navItemClasses,
       icon: <HeartIcon className="h-6 w-6" />,
       action: (target) => {
+        const { top, right, height } = target.getBoundingClientRect();
+        const offset = { top: top - (height / 3) * 2, left: right + 130 };
+
         showPopover(
           'Enjoy your Liked Songs',
           "Log in to see all the songs you've liked in one easy playlist.",
-          target
+          offset
         );
       },
     },

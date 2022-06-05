@@ -39,10 +39,17 @@ function BasePopover(_, ref) {
   }
 
   function moveTo(target) {
-    const { top, right, height } = target.getBoundingClientRect();
+    const offset = target;
 
-    nodeRef.current.style.top = `${top - (height / 3) * 2}px`;
-    nodeRef.current.style.left = `${right + 30}px`;
+    if (target instanceof Element) {
+      const { top, right, height } = target.getBoundingClientRect();
+
+      offset.top = top - (height / 3) * 2;
+      offset.left = right + 30;
+    }
+
+    nodeRef.current.style.top = `${offset.top}px`;
+    nodeRef.current.style.left = `${offset.left}px`;
   }
 
   return (
