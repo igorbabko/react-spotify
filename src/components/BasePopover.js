@@ -7,7 +7,9 @@ import {
 } from 'react';
 import BaseButton from './BaseButton';
 
-const HIDDEN_CLASSES = 'opacity-0 translate-x-1 pointer-events-none';
+const isSmallScreen = window.innerWidth < 700;
+const translateClass = isSmallScreen ? 'translate-y-1' : 'translate-x-1';
+const HIDDEN_CLASSES = `opacity-0 ${translateClass} pointer-events-none`;
 
 function BasePopover(_, ref) {
   const [classes, setClasses] = useState(HIDDEN_CLASSES);
@@ -53,11 +55,11 @@ function BasePopover(_, ref) {
   }
 
   function calculateTargetOffset(target) {
-    const { top, right, height } = target.getBoundingClientRect();
+    const { top, right, left, height } = target.getBoundingClientRect();
 
     return {
-      top: top - (height / 3) * 2,
-      left: right + 30,
+      top: isSmallScreen ? top + height * 2 : top - (height / 3) * 2,
+      left: isSmallScreen ? left : right + 30,
     };
   }
 
