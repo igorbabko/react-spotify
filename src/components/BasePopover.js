@@ -35,7 +35,7 @@ function BasePopover(_, ref) {
   function show(title, description, nextTarget, offset) {
     if (target === nextTarget) return;
 
-    moveTo(nextTarget, offset);
+    moveTo(offset ? offset : calculateTargetOffset(nextTarget));
     setTarget(nextTarget);
     setTitle(title);
     setDescription(description);
@@ -47,18 +47,18 @@ function BasePopover(_, ref) {
     setClasses(HIDDEN_CLASSES);
   }
 
-  function moveTo(target, offset) {
-    if (!offset) {
-      const { top, right, height } = target.getBoundingClientRect();
-
-      offset = {
-        top: top - (height / 3) * 2,
-        left: right + 30,
-      };
-    }
-
+  function moveTo(offset) {
     nodeRef.current.style.top = `${offset.top}px`;
     nodeRef.current.style.left = `${offset.left}px`;
+  }
+
+  function calculateTargetOffset(target) {
+    const { top, right, height } = target.getBoundingClientRect();
+
+    return {
+      top: top - (height / 3) * 2,
+      left: right + 30,
+    };
   }
 
   return (
