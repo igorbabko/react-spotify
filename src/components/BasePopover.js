@@ -22,8 +22,6 @@ function BasePopover(_, ref) {
   const nodeRef = useRef();
 
   useEffect(() => {
-    if (!target) return;
-
     function handleResize() {
       if (screenHasBecomeSmall() || screenHasBecomeWide()) {
         hide();
@@ -33,7 +31,7 @@ function BasePopover(_, ref) {
     }
 
     function handleClickAway(event) {
-      if (target.parentNode.contains(event.target)) return;
+      if (target && target.parentNode.contains(event.target)) return;
 
       if (!nodeRef.current.contains(event.target)) hide();
     }
@@ -67,11 +65,14 @@ function BasePopover(_, ref) {
 
   function hide() {
     setTarget(null);
-    setClasses(getHiddenClasses());
+    setClasses(getHiddenClasses);
   }
 
   function getHiddenClasses() {
-    const translateClass = isSmallScreen ? 'translate-y-1' : 'translate-x-1';
+    const translateClass =
+      window.innerWidth < MIN_DESKTOP_WIDTH
+        ? 'translate-y-10'
+        : 'translate-x-10';
 
     return `opacity-0 ${translateClass} pointer-events-none`;
   }
@@ -100,7 +101,7 @@ function BasePopover(_, ref) {
 
   return (
     <div
-      className={`fixed z-30 bg-[#0e72ea] text-white tracking-wide rounded-lg shadow-3xl p-4 w-[330px] select-none transition duration-300 ${classes}`}
+      className={`fixed z-30 bg-[#0e72ea] text-white tracking-wide rounded-lg shadow-3xl p-4 w-[330px] select-none transition duration-1000 ${classes}`}
       ref={nodeRef}
     >
       <h3 className="text-lg font-bold mb-2">{title}</h3>
