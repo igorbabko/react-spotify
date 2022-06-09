@@ -20,13 +20,19 @@ function BasePopover(_, ref) {
   const [description, setDescription] = useState();
   const showTimer = useRef();
   const nodeRef = useRef();
+  const changeWidthTimer = useRef();
 
   useEffect(() => {
     function handleResize() {
       if (screenHasBecomeSmall() || screenHasBecomeWide()) {
         hide();
 
-        setIsSmallScreen(window.innerWidth < MIN_DESKTOP_WIDTH);
+        clearTimeout(changeWidthTimer.current);
+
+        changeWidthTimer.current = setTimeout(
+          () => setIsSmallScreen(window.innerWidth < MIN_DESKTOP_WIDTH),
+          300
+        );
       }
     }
 
@@ -101,7 +107,7 @@ function BasePopover(_, ref) {
 
   return (
     <div
-      className={`fixed z-30 bg-[#0e72ea] text-white tracking-wide rounded-lg shadow-3xl p-4 w-[330px] select-none transition duration-1000 ${classes}`}
+      className={`fixed z-30 bg-[#0e72ea] text-white tracking-wide rounded-lg shadow-3xl p-4 w-[330px] select-none transition duration-300 ${classes}`}
       ref={nodeRef}
     >
       <h3 className="text-lg font-bold mb-2">{title}</h3>
@@ -110,7 +116,7 @@ function BasePopover(_, ref) {
         <BaseButton onClick={hide}>Not now</BaseButton>
         <BaseButton primary>Log in</BaseButton>
       </div>
-      <BasePopoverTriangle />
+      <BasePopoverTriangle side={isSmallScreen ? 'top' : 'left'} />
     </div>
   );
 }
