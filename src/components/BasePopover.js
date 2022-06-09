@@ -8,12 +8,13 @@ import {
 import BaseButton from './BaseButton';
 import BasePopoverTriangle from './BasePopoverTriangle';
 
-const isSmallScreen = window.innerWidth < 900;
-const translateClass = isSmallScreen ? 'translate-y-1' : 'translate-x-1';
-const HIDDEN_CLASSES = `opacity-0 ${translateClass} pointer-events-none`;
+const MIN_DESKTOP_WIDTH = 900;
 
 function BasePopover(_, ref) {
-  const [classes, setClasses] = useState(HIDDEN_CLASSES);
+  const [isSmallScreen, setIsSmallScreen] = useState(
+    window.innerWidth < MIN_DESKTOP_WIDTH
+  );
+  const [classes, setClasses] = useState(getHiddenClasses);
   const [target, setTarget] = useState();
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
@@ -24,7 +25,11 @@ function BasePopover(_, ref) {
     if (!target) return;
 
     function handleResize() {
-      if (screenHasBecomeSmall() || screenHasBecomeWide()) hide();
+      if (screenHasBecomeSmall() || screenHasBecomeWide()) {
+        hide();
+
+        setIsSmallScreen(window.innerWidth < MIN_DESKTOP_WIDTH);
+      }
     }
 
     function handleClickAway(event) {
@@ -62,7 +67,13 @@ function BasePopover(_, ref) {
 
   function hide() {
     setTarget(null);
-    setClasses(HIDDEN_CLASSES);
+    setClasses(getHiddenClasses());
+  }
+
+  function getHiddenClasses() {
+    const translateClass = isSmallScreen ? 'translate-y-1' : 'translate-x-1';
+
+    return `opacity-0 ${translateClass} pointer-events-none`;
   }
 
   function moveTo(offset) {
@@ -80,11 +91,11 @@ function BasePopover(_, ref) {
   }
 
   function screenHasBecomeSmall() {
-    return window.innerWidth < 900 && !isSmallScreen;
+    return window.innerWidth < MIN_DESKTOP_WIDTH && !isSmallScreen;
   }
 
   function screenHasBecomeWide() {
-    return window.innerWidth >= 900 && isSmallScreen;
+    return window.innerWidth >= MIN_DESKTOP_WIDTH && isSmallScreen;
   }
 
   return (
