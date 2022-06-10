@@ -19,13 +19,19 @@ function BasePopover(_, ref) {
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const nodeRef = useRef();
+  const changeWidthTimer = useRef();
 
   useEffect(() => {
     function handleResize() {
       if (screenHasBecomeSmall() || screenHasBecomeWide()) {
         hide();
 
-        setIsSmallScreen(window.innerWidth < MIN_DESKTOP_WIDTH);
+        clearTimeout(changeWidthTimer.current);
+
+        changeWidthTimer.current = setTimeout(
+          () => setIsSmallScreen(window.innerWidth < MIN_DESKTOP_WIDTH),
+          300
+        );
       }
     }
 
@@ -100,7 +106,7 @@ function BasePopover(_, ref) {
         <BaseButton onClick={hide}>Not now</BaseButton>
         <BaseButton primary>Log in</BaseButton>
       </div>
-      <BasePopoverTriangle />
+      <BasePopoverTriangle side={isSmallScreen ? 'top' : 'left'} />
     </div>
   );
 }
