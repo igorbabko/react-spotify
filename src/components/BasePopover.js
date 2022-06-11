@@ -6,6 +6,7 @@ import {
   useImperativeHandle,
   forwardRef,
 } from 'react';
+import usePosition from '../hooks/usePopoverPosition';
 import BaseButton from './BaseButton';
 import BasePopoverTriangle from './BasePopoverTriangle';
 
@@ -26,6 +27,7 @@ function BasePopover(_, ref) {
   const showTimer = useRef();
   const nodeRef = useRef();
   const changeWidthTimer = useRef();
+  const move = usePosition(nodeRef, isSmallScreen);
 
   useEffect(() => {
     function handleResize() {
@@ -68,7 +70,7 @@ function BasePopover(_, ref) {
     hide();
 
     showTimer.current = setTimeout(() => {
-      moveTo(offset ? offset : calculateTargetOffset(nextTarget));
+      move(nextTarget, offset);
       setTarget(nextTarget);
       setTitle(title);
       setDescription(description);
@@ -88,20 +90,6 @@ function BasePopover(_, ref) {
         : 'translate-x-10';
 
     return `opacity-0 ${translateClass} pointer-events-none`;
-  }
-
-  function moveTo({ top, left }) {
-    nodeRef.current.style.top = `${top}px`;
-    nodeRef.current.style.left = `${left}px`;
-  }
-
-  function calculateTargetOffset(target) {
-    const { top, right, left, height } = target.getBoundingClientRect();
-
-    return {
-      top: isSmallScreen ? top + height * 2 : top - (height / 3) * 2,
-      left: isSmallScreen ? left : right + 30,
-    };
   }
 
   function screenHasBecomeSmall() {
