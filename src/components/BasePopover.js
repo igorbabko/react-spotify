@@ -1,3 +1,4 @@
+import { debounce } from '../utils';
 import {
   useState,
   useEffect,
@@ -21,7 +22,6 @@ function BasePopover(_, ref) {
   const showTimer = useRef();
   const nodeRef = useRef();
   const changeWidthTimer = useRef();
-  const resizeTimer = useRef();
 
   useEffect(() => {
     function handleResize() {
@@ -41,12 +41,6 @@ function BasePopover(_, ref) {
       if (target && target.parentNode.contains(event.target)) return;
 
       if (!nodeRef.current.contains(event.target)) hide();
-    }
-
-    function debounce(callback) {
-      clearTimeout(resizeTimer.current);
-
-      resizeTimer.current = setTimeout(callback, 500);
     }
 
     const debounceResize = debounce.bind(null, handleResize);
