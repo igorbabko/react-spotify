@@ -1,4 +1,4 @@
-import { debounce } from '../utils';
+import { MIN_DESKTOP_WIDTH, debounce } from '../utils';
 import {
   useState,
   useEffect,
@@ -9,12 +9,16 @@ import {
 import BaseButton from './BaseButton';
 import BasePopoverTriangle from './BasePopoverTriangle';
 
-const MIN_DESKTOP_WIDTH = 900;
+function isCurrentWindowWidthSmall() {
+  return window.innerWidth < MIN_DESKTOP_WIDTH;
+}
+
+function isCurrentWindowWidthBig() {
+  return window.innerWidth >= MIN_DESKTOP_WIDTH;
+}
 
 function BasePopover(_, ref) {
-  const [isSmallScreen, setIsSmallScreen] = useState(
-    window.innerWidth < MIN_DESKTOP_WIDTH
-  );
+  const [isSmallScreen, setIsSmallScreen] = useState(isCurrentWindowWidthSmall);
   const [classes, setClasses] = useState(getHiddenClasses);
   const [target, setTarget] = useState();
   const [title, setTitle] = useState();
@@ -25,16 +29,16 @@ function BasePopover(_, ref) {
 
   useEffect(() => {
     function handleResize() {
-      if (screenHasBecomeSmall() || screenHasBecomeWide()) {
-        hide();
+      if (!screenHasBecomeSmall() && !screenHasBecomeBig()) return;
 
-        clearTimeout(changeWidthTimer.current);
+      hide();
 
-        changeWidthTimer.current = setTimeout(
-          () => setIsSmallScreen(window.innerWidth < MIN_DESKTOP_WIDTH),
-          300
-        );
-      }
+      clearTimeout(changeWidthTimer.current);
+
+      changeWidthTimer.current = setTimeout(
+        () => setIsSmallScreen(isCurrentWindowWidthSmall),
+        300
+      );
     }
 
     function handleClickAway(event) {
@@ -86,9 +90,9 @@ function BasePopover(_, ref) {
     return `opacity-0 ${translateClass} pointer-events-none`;
   }
 
-  function moveTo(offset) {
-    nodeRef.current.style.top = `${offset.top}px`;
-    nodeRef.current.style.left = `${offset.left}px`;
+  function moveTo({ top, left }) {
+    nodeRef.current.style.top = `${top}px`;
+    nodeRef.current.style.left = `${left}px`;
   }
 
   function calculateTargetOffset(target) {
@@ -101,11 +105,11 @@ function BasePopover(_, ref) {
   }
 
   function screenHasBecomeSmall() {
-    return window.innerWidth < MIN_DESKTOP_WIDTH && !isSmallScreen;
+    return isCurrentWindowWidthSmall() && !isSmallScreen;
   }
 
-  function screenHasBecomeWide() {
-    return window.innerWidth >= MIN_DESKTOP_WIDTH && isSmallScreen;
+  function screenHasBecomeBig() {
+    return isCurrentWindowWidthBig() && isSmallScreen;
   }
 
   return (
