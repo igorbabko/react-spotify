@@ -1,4 +1,4 @@
-import { MIN_DESKTOP_WIDTH, debounce } from '../utils';
+import { MIN_DESKTOP_WIDTH } from '../utils';
 import {
   useState,
   useEffect,
@@ -10,54 +10,24 @@ import usePosition from '../hooks/usePopoverPosition';
 import BaseButton from './BaseButton';
 import BasePopoverTriangle from './BasePopoverTriangle';
 
-function isCurrentWindowWidthSmall() {
-  return window.innerWidth < MIN_DESKTOP_WIDTH;
-}
-
-function isCurrentWindowWidthBig() {
-  return window.innerWidth >= MIN_DESKTOP_WIDTH;
-}
-
 function BasePopover(_, ref) {
-  const [isSmallScreen, setIsSmallScreen] = useState(isCurrentWindowWidthSmall);
   const [classes, setClasses] = useState(getHiddenClasses);
-  const [target, setTarget] = useState();
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const showTimer = useRef();
   const nodeRef = useRef();
-  const changeWidthTimer = useRef();
-  const move = usePosition(nodeRef, isSmallScreen);
+  const { move, target, setTarget, isSmallScreen } = usePosition(nodeRef, hide);
 
   useEffect(() => {
-    function handleResize() {
-      if (!screenHasBecomeSmall() && !screenHasBecomeBig()) return;
-
-      hide();
-
-      clearTimeout(changeWidthTimer.current);
-
-      changeWidthTimer.current = setTimeout(
-        () => setIsSmallScreen(isCurrentWindowWidthSmall),
-        300
-      );
-    }
-
     function handleClickAway(event) {
       if (target && target.parentNode.contains(event.target)) return;
 
       if (!nodeRef.current.contains(event.target)) hide();
     }
 
-    const debounceResize = debounce.bind(null, handleResize);
-
-    window.addEventListener('resize', debounceResize);
     document.addEventListener('mousedown', handleClickAway);
 
-    return () => {
-      window.removeEventListener('resize', debounceResize);
-      document.removeEventListener('mousedown', handleClickAway);
-    };
+    return () => document.removeEventListener('mousedown', handleClickAway);
   });
 
   useImperativeHandle(ref, () => ({ show }));
@@ -71,7 +41,6 @@ function BasePopover(_, ref) {
 
     showTimer.current = setTimeout(() => {
       move(nextTarget, offset);
-      setTarget(nextTarget);
       setTitle(title);
       setDescription(description);
       setClasses();
@@ -90,14 +59,6 @@ function BasePopover(_, ref) {
         : 'translate-x-10';
 
     return `opacity-0 ${translateClass} pointer-events-none`;
-  }
-
-  function screenHasBecomeSmall() {
-    return isCurrentWindowWidthSmall() && !isSmallScreen;
-  }
-
-  function screenHasBecomeBig() {
-    return isCurrentWindowWidthBig() && isSmallScreen;
   }
 
   return (
